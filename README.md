@@ -1,6 +1,5 @@
 ---
-copy the above files in a folder and run either by dragging the folder on top of Love.exe or
-use visual studios with extensions to launch
+copy the above files in a folder and run Dice.exe
 
 Press "0" to generate pattern
 	- 10000 Squares
