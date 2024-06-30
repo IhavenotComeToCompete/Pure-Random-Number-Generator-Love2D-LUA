@@ -1,5 +1,7 @@
+
 ---
-copy the above files in a folder and run Dice.exe , To see the source code open main.lua
+
+Copy the above files in a folder and run Dice.exe , To see the source code open main.lua
 
 Press "0" to generate pattern
 	- 10000 Squares
@@ -76,6 +78,7 @@ The DiceNumberSelector(M, DiceObRem) function creates 480 selector rectangles th
 The love.update(dt) function is responsible for the main logic of the program. It updates the positions of the rectangles, checks for interactions between the selector rectangles and the MotherOfObjects rectangles, and generates random numbers based on the selected objects [8].
 
 The love.draw() function is responsible for rendering the rectangles and displaying the randomly generated number, as well as some additional information like the number of objects, timers, and a message when four consecutive "6" values are generated [13].
+
 
 The user can interact with the program by pressing the "S" key to throw the dice, the "C" key to create more rectangles, and the "1" key to create more selector rectangles [15].
 
