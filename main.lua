@@ -1,3 +1,4 @@
+-- Author Mir Zarafath Ali
 -- Function that selects a seed
 function RandomSeedMaker(x)
 	local Sin = 0
