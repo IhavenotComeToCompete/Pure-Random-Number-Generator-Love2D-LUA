@@ -233,7 +233,7 @@ function love.draw()
 		love.graphics.setColor(1, 1, 1)
 		love.graphics.rectangle("line", ScrWe12Per, ScrIH12Per, ScrWe76Per, ScrIH76Per)
 		love.graphics.rectangle("line", ScrIH15Per, ScrIH16Per, ScrIH70Per, ScrIH68Per)
-		love.graphics.printf("\n 1) Press \"c\" to Generate Rectangles with Randome Values(Press\n\tmore than once to increase the randomness)\n 2) Press \"1\" or \"Numpad 1\" to Generate Selectors(Press more than\n\tonce to increase the randomness)\n 3) Press \"s\" to generate Random Values\n 4) Press \"i\" key to delete the created objects and selectors\n\nFor Quick Start :\n\n 1) Press \"o\" to Generate 10000 Rectangles with Randome Values\n\tand 480 Selectors(Press more than once to increase the\n\trandomness)\n 2) Press \"s\" to generate Random Values\n 3) Press \"r\" to reload the software", font3, ScrIH15Per, ScrIH16Per, ScrIH70Per, "left")
+		love.graphics.printf(" 1) Press Enter To Start\n 2) Press \"c\" to Generate Rectangles with Randome Values(Press\n\tmore than once to increase the randomness)\n 3) Press \"1\" or \"Numpad 1\" to Generate Selectors(Press more than\n\tonce to increase the randomness)\n 4) Press \"s\" to generate Random Values\n 5) Press \"i\" key to delete the created objects and selectors\n\nFor Quick Start :\n\n 1) Press \"o\" to Generate 10000 Rectangles with Randome Values\n\tand 480 Selectors(Press more than once to increase the\n\trandomness)\n 2) Press \"s\" to generate Random Values\n 3) Press \"r\" to reload the software", font3, ScrIH15Per, ScrIH16Per, ScrIH70Per, "left")
 	elseif GUIDispay == 2 then
 		--Draws main rectangles 
 		for In, Val in pairs(MotherOfObjects) do
