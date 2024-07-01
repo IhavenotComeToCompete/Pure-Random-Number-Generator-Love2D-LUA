@@ -1,7 +1,6 @@
 
 
-
----https://github.com/IhavenotComeToCompete/Pure-Random-Number-Generator-Love2D-LUA/assets/172130107/a3d58a2d-0150-4c4b-89dd-42e93457533c
+https://github.com/IhavenotComeToCompete/Pure-Random-Number-Generator-Love2D-LUA/assets/172130107/a3d58a2d-0150-4c4b-89dd-42e93457533c
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
