@@ -1,6 +1,17 @@
 
 ---![Working](https://github.com/IhavenotComeToCompete/Pure-Random-Number-Generator-Love2D-LUA/assets/172130107/fc3a576a-d926-49e3-b256-61bf8114a925)
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+--![Pic01](https://github.com/IhavenotComeToCompete/Pure-Random-Number-Generator-Love2D-LUA/assets/172130107/8456c26d-41fb-46a2-b195-bc825069d247)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+https://github.com/IhavenotComeToCompete/Pure-Random-Number-Generator-Love2D-LUA/assets/172130107/0aa4b8d4-3924-44ca-829b-3e41ffce0da9
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 Copy the above files in a folder and run Dice.exe , To see the source code open main.lua
 
 Press "0" to generate pattern
