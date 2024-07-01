@@ -1,4 +1,5 @@
 -- Author Mir Zarafath Ali
+
 -- Function that selects a seed
 function RandomSeedMaker(x)
 	local Sin = 0
@@ -32,6 +33,8 @@ end
 
 ---@diagnostic disable-next-line: undefined-global
 function love.load()
+	fullscreen = true
+	love.window.setFullscreen(fullscreen, "desktop")
 	-- Sets a randomeseed
 	math.randomseed(RandomSeedMaker((os.time()/math.random(math.random(1, 10), math.random(10, 100))) * math.random(math.random(1, 10), math.random(10, 100))))
 	--Variables used to increment theb value feed in Sin or Cos
@@ -47,6 +50,8 @@ function love.load()
 	ThrowDice = false
 	AllowFull10Th = false
 	AllowS = true
+	-- selects GUI to display
+	GUIDispay = 0
 	-- Variable to count how many consecutive "6" randomely poped up in a row
 	SixCounter = 0
 	-- Tables to hold objects (in our case rectangles)
@@ -55,6 +60,14 @@ function love.load()
 	-- Get the weight and hight of the screes
 	ScrWe = love.graphics.getWidth()
 	ScriH = love.graphics.getHeight()
+	ScrWe12Per = (ScrWe / 100) * 12
+	ScrIH12Per = (ScriH / 100) * 12
+	ScrIH15Per = (ScrWe / 100) * 15
+	ScrIH16Per = (ScriH / 100) * 16
+	ScrWe76Per = (ScrWe / 100) * 76
+	ScrIH76Per = (ScriH / 100) * 76
+	ScrIH70Per = (ScrWe / 100) * 70
+	ScrIH68Per = (ScriH / 100) * 68
 	-- Table to hold rectangles that will select randome rectangles from MotherOfObjects
 	RandomeSelector = {}
 	SpressCopyRandomeSelector = {}
@@ -73,6 +86,7 @@ function love.load()
 	-- Sets Fonts
 	font1 = love.graphics.setNewFont(48)
 	font2 = love.graphics.setNewFont(12)
+	font3 = love.graphics.setNewFont(31)
 	
 	-- function to create 10000 rectangles or squares
 	function DiceMaker(M, DiceObRem)
@@ -121,111 +135,127 @@ function love.load()
 end
 
 function love.update(dt)
-	--Timers working
-	GlobalTimer = GlobalTimer + dt
-	timer = timer + dt
-	-- check before starting the timer
-	if ThrowDice then
-		timer1 = timer1 + dt
-	end
-	-- Variable reset
-	ShowRandomReneratedNumber = 0
-	-- Moves the Rectangles in a pattern
-	if (#MotherOfObjects > 0 and #RandomeSelector > 0) then
-		for In, val in ipairs(MotherOfObjects) do
-			val.x = (math.sin(counter1) * ((((ScrWe/1.4)-((ScrWe/100)*1))/val.divX) * ((math.cos(counter2)) + 1)/2)) + (ScrWe / 2)
-			val.y = (math.cos(counter2) * ((((ScriH/1.4)-((ScriH/100)*1))/val.divY) * ((math.cos(counter2)) + 1)/2)) + (ScriH / 4.2)
-			counter1 = counter1 + 0.01
-			counter2 = counter2 + 0.01
-			counter3 = counter3 - 0.01
-			counter4 = counter4 - 0.01
+	if GUIDispay == 2 then
+		--Timers working
+		GlobalTimer = GlobalTimer + dt
+		timer = timer + dt
+		-- check before starting the timer
+		if ThrowDice then
+			timer1 = timer1 + dt
 		end
-
-		if timer > (math.random(12, 20)/100) then
-			timer = 0
-			for In, val in pairs(RandomeSelector) do
-				val.x = (math.sin(counter3) * ((((ScrWe/1.4)-((ScrWe/100)*1))/val.divX) * ((math.cos(counter3)) + 1)/2)) + (ScrWe / 2)
-				val.y = (math.cos(counter4) * ((((ScriH/1.4)-((ScriH/100)*1))/val.divY) * ((math.cos(counter4)) + 1)/2)) + (ScriH / 4.2)
+		-- Variable reset
+		ShowRandomReneratedNumber = 0
+		-- Moves the Rectangles in a pattern
+		if (#MotherOfObjects > 0 and #RandomeSelector > 0) then
+			for In, val in ipairs(MotherOfObjects) do
+				val.x = (math.sin(counter1) * ((((ScrWe/1.4)-((ScrWe/100)*1))/val.divX) * ((math.cos(counter2)) + 1)/2)) + (ScrWe / 2)
+				val.y = (math.cos(counter2) * ((((ScriH/1.4)-((ScriH/100)*1))/val.divY) * ((math.cos(counter2)) + 1)/2)) + (ScriH / 4.2)
+				counter1 = counter1 + 0.01
+				counter2 = counter2 + 0.01
+				counter3 = counter3 - 0.01
+				counter4 = counter4 - 0.01
 			end
-		end
-		-- Runs once timer is greater
-		if timer1 >= 1 then
-			timer1 = 0
-			ThrowDice = false
-			for In, val1 in pairs(RandomeSelector) do
-				for In, val2 in pairs(MotherOfObjects) do
-					if DOTP(val2.x, val2.y, val1.x, val1.y) < (math.random(1, 20) / math.random(10, 100)) then
-						RandomeNumber[RandomeNumberIndex] = tonumber(val2.name)
-						ShowRandomReneratedNumber = ShowRandomReneratedNumber + RandomeNumber[RandomeNumberIndex]
-						RandomeNumberIndex = RandomeNumberIndex + 1
-					end
+			-- Moves the selectors
+			if timer > (math.random(12, 20)/100) then
+				timer = 0
+				for In, val in pairs(RandomeSelector) do
+					val.x = (math.sin(counter3) * ((((ScrWe/1.4)-((ScrWe/100)*1))/val.divX) * ((math.cos(counter3)) + 1)/2)) + (ScrWe / 2)
+					val.y = (math.cos(counter4) * ((((ScriH/1.4)-((ScriH/100)*1))/val.divY) * ((math.cos(counter4)) + 1)/2)) + (ScriH / 4.2)
 				end
 			end
-			-- Selects a randome value from the selected rectangles 
-			ShowRandomReneratedNumber1 = OutPutBasedOnTypeOfData(RandomeNumber)
+			-- Runs once timer is greater
+			if timer1 >= 1 then
+				timer1 = 0
+				ThrowDice = false
+				for In, val1 in pairs(RandomeSelector) do
+					for In, val2 in pairs(MotherOfObjects) do
+						-- Based on distance selects the rectangles with values from MotherOfObjects
+						if DOTP(val2.x, val2.y, val1.x, val1.y) < (math.random(1, 20) / math.random(10, 100)) then
+							RandomeNumber[RandomeNumberIndex] = tonumber(val2.name)
+							ShowRandomReneratedNumber = ShowRandomReneratedNumber + RandomeNumber[RandomeNumberIndex]
+							RandomeNumberIndex = RandomeNumberIndex + 1
+						end
+					end
+				end
+				-- Selects a randome value from the selected rectangles 
+				ShowRandomReneratedNumber1 = OutPutBasedOnTypeOfData(RandomeNumber)
 
-			-- If no Values selected
-			if ShowRandomReneratedNumber1 == nil then
-				ShowRandomReneratedNumber1 = "Less Selectors, try adding more"
-			end
-			-- Counts consecutive "6"s
-			if ShowRandomReneratedNumber1 == 6 then
-				SixCounter = SixCounter + 1
-			else
-				SixCounter = 0
-			end
-			-- If greater than 4 then displays the below message
-			if SixCounter > 4 then
-				SixCounter = 1 -- Counter reset
-				ShowRandomReneratedNumber1 = "You Got Four \"6\" in row WOW!"
-			end
+				-- If no Values selected
+				if ShowRandomReneratedNumber1 == nil then
+					ShowRandomReneratedNumber1 = "Less Selectors, try adding more"
+				end
+				-- Counts consecutive "6"s
+				if ShowRandomReneratedNumber1 == 6 then
+					SixCounter = SixCounter + 1
+				else
+					-- resets to 0 if fails to find consecutive "6"s
+					SixCounter = 0
+				end
+				-- If greater than 4 then displays the below message
+				if SixCounter > 4 then
+					SixCounter = 1 -- Counter reset
+					ShowRandomReneratedNumber1 = "You Got Four \"6\" in row WOW!"
+				end
 
-			-- Makes Freash Tables
-			RandomeNumberIndex = 0
-			RandomeNumber = {}
-			MotherOfObjects = {}
-			RandomeSelector = {}
-			-- Collects no longer required tales or object or variables etc from the ram and deletes them
-			collectgarbage()
-			-- Again setting RandomSeed
-			math.randomseed(RandomSeedMaker((os.time()/math.random(math.random(1, 10), math.random(10, 100))) * math.random(math.random(1, 10), math.random(10, 100))))
-			-- filles Freshly created tables with rectangles and values
-			if AllowFull10Th then
-				AllowFull10Th = false
-				DiceMaker(10000, DiceObRem)
-				DiceNumberSelector(480, DiceObRem)
-				AllowS = true
+				-- Makes Freash Tables
+				RandomeNumberIndex = 0
+				RandomeNumber = {}
+				MotherOfObjects = {}
+				RandomeSelector = {}
+				-- Collects no longer required tales or object or variables etc from the ram and deletes them
+				collectgarbage()
+				-- Again setting RandomSeed
+				math.randomseed(RandomSeedMaker((os.time()/math.random(math.random(1, 10), math.random(10, 100))) * math.random(math.random(1, 10), math.random(10, 100))))
+				-- fills Freshly created tables with rectangles and values
+				if AllowFull10Th then
+					AllowFull10Th = false
+					DiceMaker(10000, DiceObRem)
+					DiceNumberSelector(480, DiceObRem)
+					AllowS = true
+				end
 			end
 		end
-	end
-	if timer1 >= 1 then
-		ThrowDice = false
-		timer1 = 0
+		-- resets the timer
+		if timer1 >= 1 then
+			ThrowDice = false
+			timer1 = 0
+		end
 	end
 end
 
 function love.draw()
-	--Draws main rectangles 
-	for In, Val in pairs(MotherOfObjects) do
-		love.graphics.setColor(Val.r, Val.g, Val.b)
-		love.graphics.rectangle("fill", Val.x, Val.y, Val.width, Val.height)
+	if GUIDispay == 0 then
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.rectangle("line", ScrWe12Per, ScrIH12Per, ScrWe76Per, ScrIH76Per)
+		love.graphics.rectangle("line", ScrIH15Per, ScrIH16Per, ScrIH70Per, ScrIH68Per)
+		love.graphics.printf(" 1) Press Enter To Start\n 2) Press \"f\" to exit or enter fullscreen\n 3) Press \"escape\" key to exit", font1, ScrIH15Per, ScrIH16Per * 2.5, ScrIH70Per, "center")
+	elseif GUIDispay == 1 then
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.rectangle("line", ScrWe12Per, ScrIH12Per, ScrWe76Per, ScrIH76Per)
+		love.graphics.rectangle("line", ScrIH15Per, ScrIH16Per, ScrIH70Per, ScrIH68Per)
+		love.graphics.printf("\n 1) Press \"c\" to Generate Rectangles with Randome Values(Press\n\tmore than once to increase the randomness)\n 2) Press \"1\" or \"Numpad 1\" to Generate Selectors(Press more than\n\tonce to increase the randomness)\n 3) Press \"s\" to generate Random Values\n 4) Press \"i\" key to delete the created objects and selectors\n\nFor Quick Start :\n\n 1) Press \"o\" to Generate 10000 Rectangles with Randome Values\n\tand 480 Selectors(Press more than once to increase the\n\trandomness)\n 2) Press \"s\" to generate Random Values\n 3) Press \"r\" to reload the software", font3, ScrIH15Per, ScrIH16Per, ScrIH70Per, "left")
+	elseif GUIDispay == 2 then
+		--Draws main rectangles 
+		for In, Val in pairs(MotherOfObjects) do
+			love.graphics.setColor(Val.r, Val.g, Val.b)
+			love.graphics.rectangle("fill", Val.x, Val.y, Val.width, Val.height)
+		end
+		-- Draws selector Rectangles
+		for In, Val in pairs(RandomeSelector) do
+			love.graphics.setColor(Val.r, Val.g, Val.b)
+			love.graphics.rectangle("fill", Val.x, Val.y, Val.width, Val.height)
+		end
+		-- Prints the Randomly generated number
+		love.graphics.setColor(1, 1, 1)
+		if ShowRandomReneratedNumber1 then
+			love.graphics.printf(ShowRandomReneratedNumber1, font1, 0, 76, ScrWe, "center")
+		end
+		-- Prints how many rectangles are flooting around
+		love.graphics.setColor(1, 0, 1)
+		love.graphics.printf( #MotherOfObjects.." Objects  and Selectors : "..#RandomeSelector.." Press \"S\" to throw dice", font2, 0, 3, ScrWe, "center")--, r, sx, sy, ox, oy, kx, ky )
+		-- Displays the Timer
+		love.graphics.printf( "Timer : "..math.ceil(GlobalTimer).."\nCalculating in Seconds : "..timer1, font2, 0, 25, ScrWe, "center")--, r, sx, sy, ox, oy, kx, ky )
 	end
-	-- Draws selector Rectangles
-	for In, Val in pairs(RandomeSelector) do
-		love.graphics.setColor(Val.r, Val.g, Val.b)
-		love.graphics.rectangle("fill", Val.x, Val.y, Val.width, Val.height)
-	end
-	-- Prints the Randomly generated number
-	love.graphics.setColor(1, 1, 1)
-	if ShowRandomReneratedNumber1 then
-		love.graphics.printf(ShowRandomReneratedNumber1, font1, 0, 76, ScrWe, "center")
-	end
-	-- Prints how many rectangles are flooting around
-	love.graphics.setColor(1, 0, 1)
-	love.graphics.printf( #MotherOfObjects.." Objects  and Selectors : "..#RandomeSelector.." Press \"S\" to throw dice", font2, 0, 3, ScrWe, "center")--, r, sx, sy, ox, oy, kx, ky )
-	-- Displays the Timer
-	love.graphics.printf( "Timer : "..math.ceil(GlobalTimer).."\nCalculating in Seconds : "..timer1, font2, 0, 25, ScrWe, "center")--, r, sx, sy, ox, oy, kx, ky )
-
 end
 
 function love.keypressed(key)
@@ -233,33 +263,74 @@ function love.keypressed(key)
 		love.event.quit()
 	end
 
-	if key == "s" then
-		if AllowS then
-			AllowS = false
-			AllowFull10Th = true
-			ThrowDice = true
+	if key == "return" then
+		if GUIDispay < 2 then
+			GUIDispay = GUIDispay + 1
 		end
 	end
 
-	if key == "c" then
-		DiceObRem1R = DiceObRem1R + 1
-		DiceMaker(100, DiceObRem1R)
+	if key == "f" then
+		fullscreen = not fullscreen
+		love.window.setFullscreen(fullscreen, "desktop")
+		ScrWe = love.graphics.getWidth()
+		ScriH = love.graphics.getHeight()
+		ScrWe12Per = (ScrWe / 100) * 12
+		ScrIH12Per = (ScriH / 100) * 12
+		ScrIH15Per = (ScrWe / 100) * 15
+		ScrIH16Per = (ScriH / 100) * 16
+		ScrWe76Per = (ScrWe / 100) * 76
+		ScrIH76Per = (ScriH / 100) * 76
+		ScrIH70Per = (ScrWe / 100) * 70
+		ScrIH68Per = (ScriH / 100) * 68
+		font1 = love.graphics.setNewFont(48 * (ScrWe/1550))
+		font2 = love.graphics.setNewFont(12 * (ScrWe/1550))
+		font3 = love.graphics.setNewFont(31 * (ScrWe/1550))
 	end
 
-	if key == "1" or key == "kp1" then
-		DiceObRem1S = DiceObRem1S + 1
-		DiceNumberSelector(12, DiceObRem1S)
-	end
-
-	if key == "o" then
-		AllowFull10Th = false
-		DiceObRem = DiceObRem + 1
-		DiceMaker(10000, DiceObRem)
-		DiceNumberSelector(480, DiceObRem)
-		AllowS = true
-	end
-	if key == "r" then
-		love.load()
+	if GUIDispay == 2 then
+		if key == "s" then
+			if AllowS then
+				AllowS = false
+				AllowFull10Th = true
+				ThrowDice = true
+			end
+		end
+	
+		if key == "c" then
+			ShowRandomReneratedNumber1 = 0
+			DiceObRem1R = DiceObRem1R + 1
+			DiceMaker(100, DiceObRem1R)
+		end
+	
+		if key == "1" or key == "kp1" then
+			ShowRandomReneratedNumber1 = 0
+			DiceObRem1S = DiceObRem1S + 1
+			DiceNumberSelector(12, DiceObRem1S)
+		end
+	
+		if key == "o" then
+			ShowRandomReneratedNumber1 = 0
+			AllowFull10Th = false
+			DiceObRem = DiceObRem + 1
+			DiceMaker(10000, DiceObRem)
+			DiceNumberSelector(480, DiceObRem)
+			AllowS = true
+		end
+		if key == "i" then
+			-- Makes Freash Tables
+			RandomeNumberIndex = 0
+			RandomeNumber = {}
+			MotherOfObjects = {}
+			RandomeSelector = {}
+			ShowRandomReneratedNumber1 = "Objects and Selectors Deleted"
+			-- Collects no longer required tales or object or variables etc from the ram and deletes them
+			collectgarbage()
+			-- Again setting RandomSeed
+			math.randomseed(RandomSeedMaker((os.time()/math.random(math.random(1, 10), math.random(10, 100))) * math.random(math.random(1, 10), math.random(10, 100))))
+		end
+		if key == "r" then
+			love.load()
+		end
 	end
 end
 -- Function to calculate distance between two points
@@ -271,12 +342,13 @@ end
 function OutPutBasedOnTypeOfData(x)
 	math.randomseed(RandomSeedMaker((os.time()/math.random(math.random(1, 10), math.random(10, 100))) * math.random(math.random(1, 10), math.random(10, 100))))
 	if type(tonumber(x[math.random(math.random(1, 10), math.random(10, #RandomeNumber))])) == "number" then
- 		local xx = x[math.random(math.random(1, 10), math.random(10, #RandomeNumber))]
+		local xx = x[math.random(math.random(1, 10), math.random(10, #RandomeNumber))]
 		for D = 1, 10, 0.01 do
 			xx = x[math.random(math.random(1,10), math.random(10, #RandomeNumber))]
 		end
 		return xx
 	else
-		-- change else to elseif and add as many checks
+			-- change else to elseif and add as many checks
+			return 1
 	end
 end
