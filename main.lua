@@ -3,40 +3,56 @@
 -- Function that selects a seed
 function RandomSeedMaker(x)
 	local Sin = 0
+	local limiter = love.math.random(100, 1000)
+	SeedGencounter = SeedGencounter + 1
+
 	if (2 % x) > 1 and (2 % x) < 2 then
-		for D = 1000 , 1 , -0.01 do
+		limiter = love.math.random(100, 1000)
+		for D = limiter , 1 , -0.01 do
 			Sin = (math.sin(D) * math.sin(D)) * x
 		end
 	elseif (2 % x) > 0 and (2 % x) < 1 then
-		for D = 1 , 1000 , 0.01 do
+		limiter = love.math.random(100, 1300)
+		for D = 1 , limiter , 0.01 do
 			Sin = (math.cos(D) * math.cos(D)) * x
 		end
 	elseif 2 % x == 0 then
-		for D = 1000 , 1 , -0.01 do
+		limiter = love.math.random(100, 1000)
+		for D = limiter , 1 , -0.01 do
 			Sin = -(math.sin(D) * math.sin(D)) * x
 		end
 	elseif 2 % x == 1 then
-		for D = 1 , 1000 , 0.01 do
+		limiter = love.math.random(100, 900)
+		for D = 1 , limiter , 0.01 do
 			Sin = -(math.cos(D) * math.sin(D)) * x
 		end
 	elseif 2 % x == 2  then
-		for D = 1000 , 1 , -0.01 do
+		limiter = love.math.random(99, 1200)
+		for D = limiter , 1 , -0.01 do
 			Sin = -(math.cos(D) * math.cos(D)) * x
 		end
 	else
-		for D = 100 , 1 , -0.02 do
+		limiter = love.math.random(10, 110)
+		for D = limiter , 1 , -0.02 do
 			Sin = -(math.cos(D) * math.cos(D)) * x
 		end
 	end
-	return math.ceil(love.math.random(love.math.random(Sin/1 , Sin/50), love.math.random(Sin/50, Sin/100)))
+	if SeedGencounter % 2 == 0 then
+		Sin = Sin
+	else
+		Sin = -Sin
+	end
+	
+	return love.math.random(love.math.random(Sin/1 , Sin/50), love.math.random(Sin/50, Sin/100))
 end
 
 ---@diagnostic disable-next-line: undefined-global
 function love.load()
+	SeedGencounter = 0
 	fullscreen = true
 	love.window.setFullscreen(fullscreen, "desktop")
 	-- Sets a randomeseed
-	love.math.randomseed(RandomSeedMaker((os.time()/love.math.random(love.math.random(1, 10), love.math.random(10, 100))) * love.math.random(love.math.random(1, 10), love.math.random(10, 100))))
+	love.math.setRandomSeed(RandomSeedMaker((os.time()/love.math.random(love.math.random(1, 10), love.math.random(10, 100))) * love.math.random(love.math.random(1, 10), love.math.random(10, 100))))
 	--Variables used to increment theb value feed in Sin or Cos
 	counter1 = 0
 	counter2 = 0
